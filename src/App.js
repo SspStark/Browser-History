@@ -2,7 +2,6 @@ import {Component} from 'react'
 import './App.css'
 import HistoryList from './components/index'
 
-// These are the list used in the application. You can move them to any component needed.
 const initialHistoryList = [
   {
     id: 0,
@@ -79,15 +78,10 @@ const initialHistoryList = [
 ]
 
 class App extends Component {
-  state = {history: initialHistoryList, isHistory: true}
+  state = {history: initialHistoryList, searchInput: '', isHistory: true}
 
   getSearchInput = event => {
-    const {history} = this.state
-    const input = event.target.value
-    const searchResults = history.filter(eachList =>
-      eachList.title.toLowerCase().includes(input.toLowerCase()),
-    )
-    this.setState({history: searchResults, isHistory: searchResults.length > 0})
+    this.setState({searchInput: event.target.value})
   }
 
   onDeleteHistory = id => {
@@ -98,7 +92,10 @@ class App extends Component {
   }
 
   render() {
-    const {history, isHistory} = this.state
+    const {history, searchInput, isHistory} = this.state
+    const searchResults = history.filter(eachItem =>
+      eachItem.title.toLowerCase().includes(searchInput),
+    )
     return (
       <div className="app-container">
         <nav className="navbar">
@@ -125,7 +122,7 @@ class App extends Component {
         </nav>
         {isHistory && (
           <ul className="lists-container">
-            {history.map(eachHistory => (
+            {searchResults.map(eachHistory => (
               <HistoryList
                 eachList={eachHistory}
                 key={eachHistory.id}

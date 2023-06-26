@@ -22,7 +22,7 @@ const HistoryList = props => {
         type="button"
         className="button"
         data-testid="delete"
-        onClick={deleteList()}
+        onClick={deleteList}
       >
         <img
           src="https://assets.ccbp.in/frontend/react-js/delete-img.png"
