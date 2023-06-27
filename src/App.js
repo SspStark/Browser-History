@@ -78,7 +78,7 @@ const initialHistoryList = [
 ]
 
 class App extends Component {
-  state = {history: initialHistoryList, searchInput: '', isHistory: true}
+  state = {history: initialHistoryList, searchInput: ''}
 
   getSearchInput = event => {
     this.setState({searchInput: event.target.value})
@@ -88,13 +88,13 @@ class App extends Component {
     const {history} = this.state
     const filteredList = history.filter(eachItem => eachItem.id !== id)
 
-    this.setState({history: filteredList, isHistory: filteredList.length > 0})
+    this.setState({history: filteredList})
   }
 
   render() {
-    const {history, searchInput, isHistory} = this.state
+    const {history, searchInput} = this.state
     const searchResults = history.filter(eachItem =>
-      eachItem.title.toLowerCase().includes(searchInput),
+      eachItem.title.toLowerCase().includes(searchInput.toLowerCase()),
     )
     return (
       <div className="app-container">
@@ -120,7 +120,11 @@ class App extends Component {
             </div>
           </div>
         </nav>
-        {isHistory && (
+        {searchResults.length === 0 ? (
+          <div className="empty-history">
+            <p>There is no history to show</p>
+          </div>
+        ) : (
           <ul className="lists-container">
             {searchResults.map(eachHistory => (
               <HistoryList
@@ -130,11 +134,6 @@ class App extends Component {
               />
             ))}
           </ul>
-        )}
-        {!isHistory && (
-          <div className="empty-history">
-            <p>There is no history to show</p>
-          </div>
         )}
       </div>
     )
